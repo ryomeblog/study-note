@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  graph-tmp:
+    build:
+      context: ./graphQL
+      dockerfile: Dockerfile
+    container_name: graph-tmp
+    ports:
+      - 14000:4000

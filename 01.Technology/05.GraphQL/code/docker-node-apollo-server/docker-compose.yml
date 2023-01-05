@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  apollo-tmp:
+    build:
+      context: ./ApolloServer
+      dockerfile: Dockerfile
+    container_name: apollo-tmp
+    ports:
+      - 14000:4000
