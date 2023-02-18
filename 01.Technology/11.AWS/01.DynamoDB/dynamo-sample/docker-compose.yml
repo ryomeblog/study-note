@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  node-test:
+    build:
+      context: ./js/
+      dockerfile: Dockerfile
+    container_name: node-test
+    volumes:
+      - ./js:/app
+      - ./.aws:/root/.aws/
+    restart: always
+    tty: true
+    depends_on:
+      - dynamodb-local
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    user: root
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data
+    volumes:
+      - dynamodb-test-data:/data
+    ports:
+      - 8000:8000
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin:latest
+    container_name: dynamodb-admin
+    environment:
+      - DYNAMO_ENDPOINT=dynamodb-local:8000
+    ports:
+      - 8001:8001
+    depends_on:
+      - dynamodb-local
+volumes:
+  dynamodb-test-data:
